@@ -13,7 +13,7 @@ This is a GUI tool I made in an afternoon to assist deleting repeated images.
 
 ## Keybindings
 
- - left/right arrow: go to previos/next image
+ - left/right arrow: go to previous/next image
  - [1-9]: select images to save
  - enter: confirm numeric selection
  - d: save only the first image
