@@ -58,10 +58,10 @@ class Window(Frame):
         
         self.msg = '           Press any key           '
         self.label1 = Label(self, text=self.msg, width=len(self.msg), bg='yellow')
-        self.label1.pack(side="bottom")
+        self.label1.pack(side='bottom')
         self.msg_state = '           Press any key           '
         self.label2 = Label(self, text=self.msg_state, width=len(self.msg_state), bg='yellow')
-        self.label2.pack(side="bottom")
+        self.label2.pack(side='bottom')
         self.img_widgets = []
 
         self.nums = set()
@@ -96,6 +96,7 @@ class Window(Frame):
         self.img_widgets = []
 
         font = ImageFont.truetype('DejaVuSansMono-Bold.ttf', size=18)
+        font_small = ImageFont.truetype('DejaVuSansMono-Bold.ttf', size=14)
 
         (win_width, win_height) = (self.winfo_width(), self.winfo_height())
         max_height = win_height - 64
@@ -110,7 +111,7 @@ class Window(Frame):
         for i in range(len(image_repeats)):
             img_filename = image_repeats[i]
             print(f'Showing {img_filename}')
-            image = Image.open(img_filename).convert("RGBA")
+            image = Image.open(img_filename).convert('RGBA')
             width = int(max_width)
             height = int(image.height * (width / image.width))
             if height > max_height:
@@ -120,7 +121,7 @@ class Window(Frame):
             # txt = Image.new('RGBA', image.size, (255,255,255,0))
             d = ImageDraw.Draw(image)
             d.text((8, 8), f'{i+1}', font=font, fill=(255, 255, 255, 255), stroke_fill=(0, 0, 0, 255), stroke_width=2)
-            d.text((8, height - 32), img_filename, font=font, fill=(255, 255, 255, 255), stroke_fill=(0, 0, 0, 255), stroke_width=2)
+            d.text((8, height - 32), img_filename, font=font_small, fill=(255, 255, 255, 255), stroke_fill=(0, 0, 0, 255), stroke_width=2)
             # image = Image.alpha_composite(image, txt)
             render = ImageTk.PhotoImage(image)
             img = Label(self, image=render)
@@ -205,8 +206,8 @@ class Window(Frame):
 
 root = Tk()
 app = Window(root)
-root.wm_title("Image remover")
-root.geometry("800x600")
+root.wm_title('Duplicate image remove assistant')
+root.geometry('1280x800')
 
 root.mainloop()
 

@@ -2,25 +2,8 @@
 
 This is a GUI tool I made in an afternoon to assist deleting repeated images.
 
-The tool takes as input a text file with list of similar/repeated images grouped in sets, like this:
-
-```
-Images/vg/1520136382070.jpg
-Images/game posters/1549056255824.jpg
-
-Images/space/planets/1529148850014.jpg
-Images/space/planets/1529148851879.jpg
-Images/space/planets/1529148854975.jpg
-Images/space/planets/1540001496237.jpg
-
-Images/to-classify/deviantart/dcky9lc-1dc57080-4f49-4a7c-830f-3969eaa29a43.jpg
-Images/to-classify/deviantart/kicks_by_rossdraws-dcky9lc.jpg
-Images/to-classify/deviantart/dcky9lc.jpg
-```
-
-The tool allows viewing each set of images at once to decide which ones to save
-and which ones to delete.  The result is written to a shell script that can be
-later executed.
+![](screenshots/two.png)
+![](screenshots/three.png)
 
 # Usage
 
@@ -40,6 +23,44 @@ later executed.
 # Dependencies
 
 - `python-pillow`
+
+# Input & Output
+
+The tool takes as input a text file with list of similar/repeated images grouped in sets, like this:
+
+```
+Images/vg/1520136382070.jpg
+Images/game posters/1549056255824.jpg
+
+Images/space/planets/1529148850014.jpg
+Images/space/planets/1529148851879.jpg
+Images/space/planets/1529148854975.jpg
+Images/space/planets/1540001496237.jpg
+
+Images/to-classify/deviantart/dcky9lc-1dc57080-4f49-4a7c-830f-3969eaa29a43.jpg
+Images/to-classify/deviantart/kicks_by_rossdraws-dcky9lc.jpg
+Images/to-classify/deviantart/dcky9lc.jpg
+```
+
+The tool allows viewing each set of images at once to decide which ones to save
+and which ones to delete.  The result is written to a shell script that can be
+later executed.  The resulting script looks like this (showing the final
+selection in a comment):
+
+```
+#!/bin/sh
+
+# [0]
+# rm 'Imatges/wallpapers/1274533397659.jpg'
+rm 'Imatges/wallpapers/1312909785960.jpg'
+rm 'Imatges/wallpapers/1289925824279.jpg'
+
+# [0, 2]
+# rm 'Imatges/wallpapers/1291557899968.jpg'
+rm 'Imatges/wallpapers/1304163762136.jpg'
+# rm 'Imatges/wallpapers/1312911526166.jpg'
+rm 'Imatges/wallpapers/1314755398122.jpg'
+```
 
 # How to generate the list
 
