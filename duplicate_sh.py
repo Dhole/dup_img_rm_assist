@@ -3,12 +3,14 @@
 import sys
 import math
 import subprocess
+import numpy as np
 from tkinter import *
 from PIL import Image, ImageTk, ImageFont, ImageDraw
 
 filename = sys.argv[1]
 # Global
 script_filename = sys.argv[2]
+matrix_size = 256
 
 print("""
 Key bindings:
@@ -108,6 +110,7 @@ class Window(Frame):
 
         x = 0
         y = 0
+        images = []
         for i in range(len(image_repeats)):
             img_filename = image_repeats[i]
             print(f'Showing {img_filename}')
@@ -118,6 +121,8 @@ class Window(Frame):
                 height = int(max_height)
                 width = int(image.width * (height / image.height))
             image = image.resize((width, height))
+            # Save transformed image for later matrix diffing
+            images.append(image.resize((matrix_size, matrix_size)).convert('L'))
             # txt = Image.new('RGBA', image.size, (255,255,255,0))
             d = ImageDraw.Draw(image)
             d.text((8, 8), f'{i+1}', font=font, fill=(255, 255, 255, 255), stroke_fill=(0, 0, 0, 255), stroke_width=2)
@@ -131,6 +136,27 @@ class Window(Frame):
             y = (i // cols) * max_height
             print(f'({i % cols}, {i // cols}) -> ({x}, {y})')
             img.place(x=x, y=y)
+
+        # Show visual diff matrix
+        num=len(images)
+        label2_y = self.label2.winfo_y()
+        for i in range(num):
+            for j in range(i+1, num):
+                image_i = images[i].tobytes()
+                image_j = images[j].tobytes()
+                diff = np.zeros(matrix_size * matrix_size, dtype=np.uint8)
+                max_val = 0
+                for k in range(len(image_i)):
+                    diff[k] = min(255, abs(int(image_i[k]) - int(image_j[k])))
+                    max_val = max(diff[k], max_val)
+
+                diff = diff * (255 // max_val) # normalize
+                diff_im = Image.frombuffer(mode='L', size=(matrix_size, matrix_size), data=diff.tobytes())
+                render = ImageTk.PhotoImage(diff_im)
+                img = Label(self, image=render)
+                self.img_widgets.append(img)
+                img.image = render
+                img.place(x=win_width/2 - num * matrix_size / 2 +  (j - 1)*matrix_size, y=label2_y - (num - 1 - i) * matrix_size )
         print()
         self.msg_state = f'{self.index+1}/{len(images_repeats)} save: {[i + 1 for i in images_save[self.index]]} ({len(images_repeats[self.index])})'
         self.label2.config(text=self.msg_state)
